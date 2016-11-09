@@ -1,0 +1,124 @@
+module qos {
+	yang-version 1;
+    namespace "http://www.huawei.com/netconf/vrp";
+    prefix "qos";
+    revision "2016-09-01" {
+        description "huawei QOS";
+        reference "qos";
+    }
+    container qosCbQos {
+        container qosClassifiers {
+            list qosClassifier {
+                key "classifierID";
+                leaf classifierName {
+                    type string;
+                }
+                leaf classifierID {
+                    type uint32;
+                }
+                leaf operator {
+                    type enumeration {
+                        enum and{
+                            value 0;
+                        }
+                        enum or{
+                            value 1;
+                        }
+                    }
+                }
+               container qosRuleAcls {
+                    list qosRuleAcl {
+                        key "aclName";
+                        leaf aclName {
+                            type string;
+                        }
+                    }
+                }
+            }
+        }
+        container qosBehaviors {
+            list qosBehavior {
+                config false;
+                leaf behaviorName {
+                    type string;
+                }
+            container qosActRdrNhps {
+                    list qosActRdrNhp {
+                        key "nextHop";
+                        leaf nextHop {
+                            type string; //actually it is typedef ipv4, but we are using string, so should be fine
+                        }
+                        leaf rdrType {
+                            type enumeration {
+                                enum backup{
+                                    value 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        container qosPolicys {
+            list qosPolicy {
+                config false;
+                leaf policyName {
+                    type string;
+                }
+                container qosPolicyNodes {
+                    list qosPolicyNode {
+                        config false;
+                        leaf priority {
+                            type uint16;
+                        }
+                        leaf classifierName {
+                            type string;
+                        }
+                        leaf behaviorName {
+                            type string;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    container qosIfQoss {
+        list qosIfQos {
+            config false;
+            leaf ifName {
+                type string;
+            }
+            container qosPolicyApplys {
+                list qosPolicyApply {
+                    config false;
+                    leaf direction {
+                        type enumeration {
+                            enum inbound{
+                                value 0;
+                            }
+                            enum outbound{
+                                value 1;
+                            }
+                        }
+                    }
+                    leaf layer {
+                        type enumeration {
+                            enum none{
+                                value 0;
+                            }
+                        }
+                    }
+                    leaf policyName {
+                        type string;
+                    }
+                    leaf vlanMode {
+                        type boolean;
+                    }
+                    leaf groupId {
+                        type uint32;
+                    }
+                }
+            }
+        }
+    }
+}

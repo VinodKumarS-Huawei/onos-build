@@ -1,0 +1,69 @@
+module acl {
+	yang-version 1;
+    namespace "http://www.huawei.com/netconf/vrp";
+    prefix "acl";
+    revision "2016-09-01" {
+        description "huawei ACL";
+        reference "ACL";
+    }
+    container aclGroups {
+    	list aclGroup{
+    		key "aclNumOrName";
+    		leaf aclNumOrName {
+    			type string;
+    		}
+    		container aclRuleAdv4s {
+    			list aclRuleAdv4 {
+    				key "aclRuleName";
+    				leaf aclRuleName{
+    					type string;
+    				}
+    				leaf aclRuleID{
+    					type uint32;
+    				}
+    				leaf aclAction{
+    					type enumeration {
+    						enum "permit"{
+    							value 0;
+    						}
+    						enum "deny"{
+    							value 1;
+    						}
+    					}
+    				}
+    				leaf aclProtocol{
+    					type uint8;
+    				}
+    				leaf aclSourceIp{
+    					type string; //actually it is typedef ipv4, but we are using string, so should be fine
+    				}
+    				leaf aclSrcWild{
+    					type string; //actually it is typedef ipv4, but we are using string, so should be fine
+    				}
+    				leaf aclDestIp{
+    					type string; //actually it is typedef ipv4, but we are using string, so should be fine
+    				}
+    				leaf aclDestWild{
+    					type string; //actually it is typedef ipv4, but we are using string, so should be fine
+    				}
+    				leaf vrfName{
+    					type string; 
+    				}
+    				leaf aclActiveStatus{
+    					type enumeration {
+    						enum active{
+    							value 0;
+    						}
+    						enum notInService{
+    							value 1;
+    						}
+    						enum notReady{
+    							value 2;
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    }
+}

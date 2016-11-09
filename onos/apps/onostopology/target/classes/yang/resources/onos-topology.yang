@@ -1,0 +1,132 @@
+ module onos-topology {
+   yang-version 1;
+   namespace "ydt:onos:topology";
+   prefix device;
+
+   import ietf-inet-types {
+       prefix "inet";
+   }
+
+   typedef chassisId {
+       type uint32;
+   }
+
+   typedef device-id {
+       type string;
+   }
+
+   list Device {
+      key id;
+      leaf id {
+         type device-id;
+      }
+
+      leaf type {
+        type enumeration {
+          enum "switch";
+          enum "router";
+          enum "roadm";
+          enum "otn";
+          enum "roadm_otn";
+          enum "firewall";
+          enum "balancer";
+          enum "ips";
+          enum "ids";
+          enum "controller";
+          enum "virtual";
+          enum "fiber_switch";
+          enum "microwave";
+          enum "olt";
+          enum "onu";
+          enum "other";
+        }
+      }
+
+      leaf manufacturer {
+         type string;
+      }
+
+      leaf hwVersion {
+         type string;
+      }
+
+      leaf swVersion {
+         type string;
+      }
+
+      leaf serialNumber {
+          type string;
+      }
+
+      leaf chassisId {
+          type chassisId;
+      }
+
+      list ports {
+         key number;
+         uses port;
+      }
+   }
+
+   grouping port {
+      leaf number {
+         type uint32;
+      }
+      leaf is-enabled {
+         type boolean;
+      }
+      leaf port-type {
+       type enumeration {
+             enum "copper";
+             enum "fiber";
+             enum "packet";
+             enum "oduclt";
+             enum "och";
+             enum "oms";
+             enum "virtual";
+             enum "otu";
+       }
+      }
+      leaf port-speed {
+         type uint32;
+      }
+   }
+
+   list link {
+      key "srcDeviceId dstDeviceId srcPortNumber dstPortNumber";
+      leaf srcDeviceId {
+          type device-id;
+      }
+      leaf srcPortNumber {
+          type uint32;
+      }
+      leaf dstDeviceId {
+          type device-id;
+      }
+      leaf dstPortNumber {
+          type uint32;
+      }
+      leaf leaf-type {
+         type enumeration {
+             enum "direct";
+             enum "indirect";
+             enum "edge";
+             enum "tunnel";
+             enum "optical";
+             enum "virtual";
+         }
+      }
+      leaf state {
+         type enumeration {
+             enum "active";
+             enum "inactive";
+         }
+      }
+      leaf isDurable {
+          type boolean;
+      }
+      leaf isExpected {
+          type boolean;
+      }
+   }
+ }
